@@ -21,4 +21,8 @@
         <Using Include="NUnit.Framework"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TP_TDD\TP_TDD.csproj" />
+    </ItemGroup>
+
 </Project>
