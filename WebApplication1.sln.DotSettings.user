@@ -1,6 +1,11 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=087212bc_002Df671_002D45b4_002D93c0_002D38a382294808/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="AddBook_ShouldAddBookToLibrary" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=087212bc_002Df671_002D45b4_002D93c0_002D38a382294808/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="AddBook_ShouldAddBookToLibrary" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.BookServiceTests.AddBook_ShouldAddBookToLibrary&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.BookServiceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=600c740d_002Dad33_002D48df_002D8d53_002D7642b33ffe3b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="BookServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.BookServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
