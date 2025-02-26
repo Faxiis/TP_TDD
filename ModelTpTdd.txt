@@ -1,0 +1,5 @@
+Books : Author Editor
+Author : List<Books>
+Editor : List<Books>
+Adhérents : List<Reservation>
+Reservation : Adhérent Books

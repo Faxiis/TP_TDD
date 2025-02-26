@@ -1,0 +1,7 @@
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\bin\Debug\net8.0\CoverletSourceRootsMapping_TP_TDD_TEST
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.csproj.AssemblyReference.cache
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.AssemblyInfoInputs.cache
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.AssemblyInfo.cs
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.csproj.CoreCompileInputs.cache
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.sourcelink.json
