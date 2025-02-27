@@ -10,4 +10,9 @@ public class ReservationService(IReservationDataService databaseService)
         databaseService.AddReservation(reservation);
     }
     
+    public Reservation? GetReservationById(int id)
+    {
+        return databaseService.GetReservationById(id);
+    }
+    
 }

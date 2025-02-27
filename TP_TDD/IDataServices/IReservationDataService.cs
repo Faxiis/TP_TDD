@@ -5,4 +5,6 @@ namespace TP_TDD.Services;
 public interface IReservationDataService
 {
     void AddReservation(Reservation reservation);
+    
+    Reservation? GetReservationById(int id);
 }

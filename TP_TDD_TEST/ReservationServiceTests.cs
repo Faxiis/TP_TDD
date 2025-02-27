@@ -23,11 +23,11 @@ public class ReservationServiceTests
         var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
         var expectedReservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24) };
 
-        _mockDatabaseService.Setup(service => service.GetReservationById("2253009687")).Returns(expectedReservation);
+        _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(expectedReservation);
 
         var reservationService = new ReservationService(_mockDatabaseService.Object);
 
-        var reservation = reservationService.GetReservationById("2253009687");
+        var reservation = reservationService.GetReservationById(1);
         Assert.That(reservation, Is.EqualTo(expectedReservation));
     }
     
