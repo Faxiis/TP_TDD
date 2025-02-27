@@ -24,5 +24,7 @@
     &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.IsbnValidatorTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.TestTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.StockManagerTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.ReservationServiceTests.GetReservation_ShouldReturnReservations&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::F07A8AFE-6C68-4571-8CC7-1D039017A92B::net8.0::TP_TDD_TEST.ReservationServiceTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

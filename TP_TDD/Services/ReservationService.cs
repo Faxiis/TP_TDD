@@ -36,4 +36,9 @@ public class ReservationService(IReservationDataService databaseService)
         
         return nbReservations?.Count(r => !r.IsReturned) >= 3;
     }
+    
+    public List<Reservation>? GetReservations()
+    {
+        return databaseService.GetReservations()?.Where(r => r.IsReturned == false).ToList();
+    }
 }
