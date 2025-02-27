@@ -7,5 +7,5 @@ public class Book
         public string Author { get; set; }
         public string Publisher { get; set; }
         public string Format { get; set; }
-        public bool IsAvailable { get; set; } 
+        public bool IsAvailable { get; set; } = true;
 }
