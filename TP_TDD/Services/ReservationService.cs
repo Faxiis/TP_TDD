@@ -41,5 +41,9 @@ public class ReservationService(IReservationDataService databaseService)
     {
         return databaseService.GetReservations()?.Where(r => r.IsReturned == false).ToList();
     }
-
+    
+    public List<Reservation>? GetReservationsByMember(int code)
+    {
+        return databaseService.GetReservationByMember(code)?.ToList();
+    }
 }
