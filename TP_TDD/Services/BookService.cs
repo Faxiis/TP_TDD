@@ -9,9 +9,8 @@ public class BookService(IBookDataService databaseService, IBookDataService webS
 
     public void AddBook(Book book)
     {
-        // TODO : vérifier l'existance du livre
-        
-        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn))
+        var existingBook = databaseService.GetBookByIsbn(book.Isbn);
+        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn) || existingBook != null)
         {
             return;
         }
