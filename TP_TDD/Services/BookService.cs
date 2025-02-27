@@ -1,15 +1,17 @@
 using TP_TDD.Models;
+using TP_TDD.Validators;
 
 namespace TP_TDD.Services;
 
-public class BookService
+public class BookService(IsbnValidator isbnValidator)
 {
 
+    private IsbnValidator _isbnValidator = isbnValidator;
     private readonly List<Book> _books = [];
-    
+
     public void AddBook(Book book)
     {
-        if (!AreAllFieldsFilled(book))
+        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn))
         {
             return;
         }
@@ -28,7 +30,7 @@ public class BookService
     
     public void UpdateBook(Book book)
     {
-        if (!AreAllFieldsFilled(book))
+        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn))
         {
             return;
         }

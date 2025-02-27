@@ -1,17 +1,22 @@
 using TP_TDD.Models;
 using TP_TDD.Services;
+using TP_TDD.Validators;
 
 namespace TP_TDD_TEST;
 
 public class BookServiceTests
 {
     private BookService _bookService;
+    private IsbnValidator _isbnValidator;
+    
     
     [SetUp]
     public void Setup()
     {
-        _bookService = new BookService();
+        _isbnValidator = new IsbnValidator();
+        _bookService = new BookService(_isbnValidator);
     }
+    
     
     [Test]
     public void AddBook_ShouldAddBookToLibrary()

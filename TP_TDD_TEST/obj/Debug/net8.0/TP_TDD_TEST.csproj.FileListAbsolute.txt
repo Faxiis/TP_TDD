@@ -157,3 +157,5 @@ C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebAppli
 C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.pdb
 C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\TP_TDD_TEST.genruntimeconfig.cache
 C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\obj\Debug\net8.0\ref\TP_TDD_TEST.dll
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\bin\Debug\net8.0\Castle.Core.dll
+C:\Users\antho\OneDrive\Documents\Cours\M1\Développement par les tests\WebApplication1\TP_TDD_TEST\bin\Debug\net8.0\Moq.dll
