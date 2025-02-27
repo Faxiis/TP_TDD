@@ -9,7 +9,7 @@ public class BookService
     
     public void AddBook(Book book)
     {
-        if (string.IsNullOrEmpty(book.Isbn) || string.IsNullOrEmpty(book.Title) || book.Author == null || book.Publisher == null || string.IsNullOrEmpty(book.Format))
+        if (!AreAllFieldsFilled(book))
         {
             return;
         }
@@ -28,6 +28,11 @@ public class BookService
     
     public void UpdateBook(Book book)
     {
+        if (!AreAllFieldsFilled(book))
+        {
+            return;
+        }
+                
         var existingBook = GetBookByIsbn(book.Isbn);
         if (existingBook != null)
         {
@@ -44,5 +49,8 @@ public class BookService
         return _books.FirstOrDefault(b => b.Isbn == isbn);
     }
     
-    
+    private bool AreAllFieldsFilled(Book book)
+    {
+        return !string.IsNullOrEmpty(book.Isbn) && !string.IsNullOrEmpty(book.Title) && book.Author != null && book.Publisher != null && !string.IsNullOrEmpty(book.Format);
+    }
 }
