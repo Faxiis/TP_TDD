@@ -7,6 +7,11 @@ public class ReservationService(IReservationDataService databaseService)
 
     public void AddReservation(Reservation reservation)
     {
+        if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4))
+        {
+            return;
+        }
+        
         databaseService.AddReservation(reservation);
     }
     

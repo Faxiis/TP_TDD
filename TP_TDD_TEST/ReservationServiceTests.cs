@@ -59,8 +59,6 @@ public class ReservationServiceTests
         var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
         var reservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 8, 24) };
 
-        _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(reservation);
-        
         var reservationService = new ReservationService(_mockDatabaseService.Object);
         reservationService.AddReservation(reservation);
 
