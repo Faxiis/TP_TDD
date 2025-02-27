@@ -1,6 +1,8 @@
+using TP_TDD.Models;
+
 namespace TP_TDD.Services;
 
-public class IReservationDataService
+public interface IReservationDataService
 {
-    
+    void AddReservation(Reservation reservation);
 }

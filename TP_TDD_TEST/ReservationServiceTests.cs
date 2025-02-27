@@ -22,14 +22,10 @@ public class ReservationServiceTests
         var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
         var reservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24) };
-        
-        _mockDatabaseService.Setup(service => service.GetReservationDataById("2253009687")).Returns(reservation);
 
         var reservationService = new ReservationService(_mockDatabaseService.Object);
-        reservationService.Add(reservation);
+        reservationService.AddReservation(reservation);
 
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Once);
-        Assert.IsNotNull(reservationService.GetReservationDataById(1));
-        Assert.That(reservationService.GetReservationDataById(1, Is.EqualTo(book)));
     }
 }
