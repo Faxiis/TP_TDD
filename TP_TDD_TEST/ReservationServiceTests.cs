@@ -123,4 +123,23 @@ public class ReservationServiceTests
 
         Assert.That(reservations, Is.EqualTo(new List<Reservation> { reservation1, reservation2, reservation3 }));
     }
+    
+    [Test]
+    public void GetReservationByMember_ShouldReturnReservations()
+    {
+        var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
+        var reservation1 = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+        var reservation2 = new Reservation() { Id = 2, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+        var reservation3 = new Reservation() { Id = 3, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+
+        _mockDatabaseService.Setup(service => service.GetReservationByMember(1)).Returns(new List<Reservation> { reservation1, reservation2, reservation3 });
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservations = reservationService.GetReservationsByMember(1);
+
+        Assert.That(reservations, Is.EqualTo(new List<Reservation> { reservation1, reservation2, reservation3 }));
+    }
 }
