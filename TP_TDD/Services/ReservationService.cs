@@ -12,7 +12,7 @@ public class ReservationService(IReservationDataService databaseService)
     
     public void AddReservation(Reservation reservation)
     {
-        if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4))
+        if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4) || Has3Reservations(reservation.Member))
         {
             return;
         }
@@ -28,5 +28,12 @@ public class ReservationService(IReservationDataService databaseService)
         {
             reservation.IsReturned = true;
         }
+    }
+    
+    private bool Has3Reservations(Member member)
+    {
+        var nbReservations = databaseService.GetReservationByMember(member.Code);
+        
+        return nbReservations?.Count(r => !r.IsReturned) >= 3;
     }
 }

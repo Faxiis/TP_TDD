@@ -83,7 +83,6 @@ public class ReservationServiceTests
         Assert.IsTrue(reservation.IsReturned);
     }
     
-    // test qu'un adhérent ne peut pas avoir plus de 3 réservations en cours
     [Test]
     public void AddReservation_ShouldNotAddReservationToLibrary_MemberHas3Reservations()
     {
@@ -96,14 +95,12 @@ public class ReservationServiceTests
         var reservation3 = new Reservation() { Id = 3, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
         var reservation = new Reservation() { Id = 4, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
 
-        _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(reservation1);
-        _mockDatabaseService.Setup(service => service.GetReservationById(2)).Returns(reservation2);
-        _mockDatabaseService.Setup(service => service.GetReservationById(3)).Returns(reservation3);
-        
+        _mockDatabaseService.Setup(service => service.GetReservationByMember(1)).Returns(new List<Reservation> { reservation1, reservation2, reservation3 });
+
         var reservationService = new ReservationService(_mockDatabaseService.Object);
         reservationService.AddReservation(reservation);
 
-        _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);;
+        _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
         Assert.IsNull(reservationService.GetReservationById(4));
     }
 }
