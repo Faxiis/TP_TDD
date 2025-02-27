@@ -3,11 +3,9 @@ using TP_TDD.Validators;
 
 namespace TP_TDD.Services;
 
-public class BookService(IsbnValidator isbnValidator)
+public class BookService(IBookDataService databaseService, IBookDataService webService)
 {
-
-    private IsbnValidator _isbnValidator = isbnValidator;
-    private readonly List<Book> _books = [];
+    private readonly IsbnValidator _isbnValidator = new IsbnValidator();
 
     public void AddBook(Book book)
     {
@@ -15,56 +13,46 @@ public class BookService(IsbnValidator isbnValidator)
         {
             return;
         }
-        
-        _books.Add(book);
+
+        databaseService.AddBook(book);
     }
-    
-    public void DeleteBook(string isbn)
-    {
-        var book = GetBookByIsbn(isbn);
-        if (book != null)
-        {
-            _books.Remove(book);
-        }
-    }
-    
+
     public void UpdateBook(Book book)
     {
         if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn))
         {
             return;
         }
-                
-        var existingBook = GetBookByIsbn(book.Isbn);
-        if (existingBook != null)
-        {
-            existingBook.Title = book.Title;
-            existingBook.Author = book.Author;
-            existingBook.Publisher = book.Publisher;
-            existingBook.Format = book.Format;
-            existingBook.IsAvailable = book.IsAvailable;
-        }
+
+        databaseService.UpdateBook(book);
     }
 
-    public Book? GetBookByIsbn(string isbn)
+    public void DeleteBook(string isbn)
     {
-        return _books.FirstOrDefault(b => b.Isbn == isbn);
+        databaseService.DeleteBook(isbn);
     }
 
-    public Book? GetBookByTitle(string title)
+    public Book? GetBookDataByIsbn(string isbn)
     {
-        return _books.FirstOrDefault(b => b.Title == title);
+        return databaseService.GetBookByIsbn(isbn) ?? webService.GetBookByIsbn(isbn);
     }
 
-    public Book? GetBookByAuthor(string authorName)
+    public Book? GetBookDataByTitle(string title)
     {
-        return _books.FirstOrDefault(b => b.Author?.LastName == authorName || b.Author?.FirstName == authorName);
+        return databaseService.GetBookByTitle(title) ?? webService.GetBookByTitle(title);
+    }
+
+    public Book? GetBookDataByAuthor(string name)
+    {
+        return databaseService.GetBookByAuthor(name) ?? webService.GetBookByAuthor(name);
     }
     
     private bool AreAllFieldsFilled(Book book)
     {
-        return !string.IsNullOrEmpty(book.Isbn) && !string.IsNullOrEmpty(book.Title) && book.Author != null && book.Publisher != null && !string.IsNullOrEmpty(book.Format);
+        return !string.IsNullOrEmpty(book.Isbn)
+               && !string.IsNullOrEmpty(book.Title)
+               && book.Author != null
+               && book.Publisher != null
+               && !string.IsNullOrEmpty(book.Format);
     }
-    
-    
 }
