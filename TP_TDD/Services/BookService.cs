@@ -48,9 +48,21 @@ public class BookService
     {
         return _books.FirstOrDefault(b => b.Isbn == isbn);
     }
+
+    public Book? GetBookByTitle(string title)
+    {
+        return _books.FirstOrDefault(b => b.Title == title);
+    }
+
+    public Book? GetBookByAuthor(string authorName)
+    {
+        return _books.FirstOrDefault(b => b.Author?.LastName == authorName || b.Author?.FirstName == authorName);
+    }
     
     private bool AreAllFieldsFilled(Book book)
     {
         return !string.IsNullOrEmpty(book.Isbn) && !string.IsNullOrEmpty(book.Title) && book.Author != null && book.Publisher != null && !string.IsNullOrEmpty(book.Format);
     }
+    
+    
 }
