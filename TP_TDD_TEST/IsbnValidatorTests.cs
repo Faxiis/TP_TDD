@@ -17,4 +17,16 @@ public class IsbnValidatorTests
         
         Assert.True(result);
     }
+    
+    [Test]
+    public void IsValid_IsbnIsNotValid_ReturnsFalse()
+    {
+        var isbn = "123456789";
+        var isbnValidator = new IsbnValidator();
+        
+        var result = isbnValidator.IsValid(isbn);
+        
+        Assert.False(result);
+    }
 }
+

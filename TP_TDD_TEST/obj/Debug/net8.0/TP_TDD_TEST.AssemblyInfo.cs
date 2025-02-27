@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TP_TDD_TEST")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+babab36345b257c4d5d6bf6e22dee32cac74c1a0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b9caad6999b7b7f9666d3792dadfef4828973356")]
 [assembly: System.Reflection.AssemblyProductAttribute("TP_TDD_TEST")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TP_TDD_TEST")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
