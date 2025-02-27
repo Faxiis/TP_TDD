@@ -4,7 +4,7 @@ namespace TP_TDD.Services;
 
 public interface IReservationDataService
 {
-    void AddReservation(Reservation reservation);
-    
     Reservation? GetReservationById(int id);
+    void AddReservation(Reservation reservation);
+    void EndReservation(int id);
 }

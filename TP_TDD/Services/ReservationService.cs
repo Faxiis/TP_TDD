@@ -5,6 +5,11 @@ namespace TP_TDD.Services;
 public class ReservationService(IReservationDataService databaseService)
 {
 
+    public Reservation? GetReservationById(int id)
+    {
+        return databaseService.GetReservationById(id);
+    }
+    
     public void AddReservation(Reservation reservation)
     {
         if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4))
@@ -15,9 +20,13 @@ public class ReservationService(IReservationDataService databaseService)
         databaseService.AddReservation(reservation);
     }
     
-    public Reservation? GetReservationById(int id)
+    public void EndReservation(int id)
     {
-        return databaseService.GetReservationById(id);
+        var reservation = databaseService.GetReservationById(id);
+        
+        if (reservation != null)
+        {
+            reservation.IsReturned = true;
+        }
     }
-    
 }
