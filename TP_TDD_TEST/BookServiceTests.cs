@@ -111,7 +111,7 @@ public class BookServiceTests
         var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
-        var addedBook = _bookService.GetBookByIsbn("1234567891");
+        var addedBook = _bookService.GetBookByIsbn("Test Book");
         
         Assert.Null(addedBook);
     }
