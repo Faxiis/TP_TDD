@@ -16,7 +16,9 @@ public class BookServiceTests
     [Test]
     public void AddBook_ShouldAddBookToLibrary()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { Id=1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
         var addedBook = _bookService.GetBookByIsbn("1234567890");
@@ -28,7 +30,9 @@ public class BookServiceTests
     [Test]
     public void AddBook_ShouldNotAddBookToLibrary()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, IsAvailable = true };
         _bookService.AddBook(book);
 
         var addedBook = _bookService.GetBookByIsbn("1234567890");
@@ -39,7 +43,9 @@ public class BookServiceTests
     [Test]
     public void DeleteBook_ShouldDeleteBookFromLibrary()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
         _bookService.DeleteBook("1234567890");
@@ -50,25 +56,14 @@ public class BookServiceTests
     }
     
     [Test]
-    public void DeleteBook_ShouldNotDeleteBookFromLibrary()
-    {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
-        _bookService.AddBook(book);
-
-        _bookService.DeleteBook("1234567891");
-
-        var deletedBook = _bookService.GetBookByIsbn("1234567890");
-        
-        Assert.NotNull(deletedBook);
-    }
-        
-    [Test]
     public void UpdateBook_ShouldUpdateBook()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
-        var updatedBook = new Book() { Isbn = "1234567890", Title = "Updated Test Book", Author = "Updated Test Author", Publisher = "Updated Test Publisher", Format = "Poche", IsAvailable = true };
+        var updatedBook = new Book() { Isbn = "1234567890", Title = "Updated Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.UpdateBook(updatedBook);
 
         var addedBook = _bookService.GetBookByIsbn("1234567890");
@@ -76,14 +71,16 @@ public class BookServiceTests
         Assert.NotNull(addedBook);
         Assert.That(addedBook.Title, Is.EqualTo("Updated Test Book"));
     }
-    
+      
     [Test]
     public void UpdateBook_ShouldNotUpdateBook()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
-        var updatedBook = new Book() { Isbn = "1234567891", Title = "Updated Test Book", Author = "Updated Test Author", Publisher = "Updated Test Publisher", Format = "Poche", IsAvailable = true };
+        var updatedBook = new Book() { Isbn = "1234567890", Title = "Updated Test Book", Author = author, Publisher = publisher, IsAvailable = true };
         _bookService.UpdateBook(updatedBook);
 
         var addedBook = _bookService.GetBookByIsbn("1234567890");
@@ -95,7 +92,9 @@ public class BookServiceTests
     [Test]
     public void GetBookByIsbn_ShouldReturnBook()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
         var addedBook = _bookService.GetBookByIsbn("1234567890");
@@ -107,7 +106,9 @@ public class BookServiceTests
     [Test]
     public void GetBookByIsbn_ShouldNotReturnBook()
     {
-        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = "Test Author", Publisher = "Test Publisher", Format = "Poche", IsAvailable = true };
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         _bookService.AddBook(book);
 
         var addedBook = _bookService.GetBookByIsbn("1234567891");

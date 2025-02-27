@@ -9,7 +9,7 @@ public class BookService
     
     public void AddBook(Book book)
     {
-        if (string.IsNullOrEmpty(book.Isbn) || string.IsNullOrEmpty(book.Title) || string.IsNullOrEmpty(book.Author) || string.IsNullOrEmpty(book.Publisher) || string.IsNullOrEmpty(book.Format))
+        if (string.IsNullOrEmpty(book.Isbn) || string.IsNullOrEmpty(book.Title) || book.Author == null || book.Publisher == null || string.IsNullOrEmpty(book.Format))
         {
             return;
         }
@@ -43,4 +43,6 @@ public class BookService
     {
         return _books.FirstOrDefault(b => b.Isbn == isbn);
     }
+    
+    
 }
