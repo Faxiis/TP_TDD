@@ -81,6 +81,24 @@ public class BookServiceTests
     }
     
     [Test]
+    public void AddBook_ShouldNotAddBookToLibrary_IfBookAlreadyExists()
+    {
+        var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var existingBook = new Book() { Isbn = "2253009687", Title = "Existing Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+
+        _mockDatabaseService.Setup(service => service.GetBookByIsbn("2253009687")).Returns(existingBook);
+
+        var newBook = new Book() { Isbn = "2253009687", Title = "New Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+
+        var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
+        stockManager.AddBook(newBook);
+
+        _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Never);
+        Assert.That(stockManager.GetBookDataByIsbn("2253009687")?.Title, Is.EqualTo("Existing Book"));
+    }
+    
+    [Test]
     public void AddBook_ShouldNotAddBookToLibrary_NotAllFieldsFilled()
     {
         var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
