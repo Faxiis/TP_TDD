@@ -10,9 +10,20 @@ public class IsbnValidatorTests
     }
     
     [Test]
-    public void IsValid_IsbnIsValid_ShouldReturnsTrue()
+    public void IsValid_IsbnIs10CharValid_ShouldReturnsTrue()
     {
         var isbn = "2253009687";
+        var isbnValidator = new IsbnValidator();
+        
+        var result = isbnValidator.IsValid(isbn);
+        
+        Assert.True(result);
+    }
+    
+    [Test]
+    public void IsValid_IsbnIs13CharValid_ShouldReturnsTrue()
+    {
+        var isbn = "9780689856662";
         var isbnValidator = new IsbnValidator();
         
         var result = isbnValidator.IsValid(isbn);
@@ -53,7 +64,14 @@ public class IsbnValidatorTests
         Assert.False(result);
     }
     
-
-    
+    public void IsValid_IsbnIsValidAndEndsWithX_ReturnsTrue()
+    {
+        var isbn = "123456789X";
+        var isbnValidator = new IsbnValidator();
+        
+        var result = isbnValidator.IsValid(isbn);
+        
+        Assert.True(result);
+    }
 }
 

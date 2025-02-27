@@ -115,5 +115,56 @@ public class BookServiceTests
         
         Assert.Null(addedBook);
     }
+    
+    [Test]
+    public void GetBookByTitle_ShouldReturnBook()
+    {
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        _bookService.AddBook(book);
 
+        var addedBook = _bookService.GetBookByTitle("Test Book");
+        
+        Assert.NotNull(addedBook);
+    }
+    
+    [Test]
+    public void GetBookByTitle_ShouldNotReturnBook()
+    {
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        _bookService.AddBook(book);
+
+        var addedBook = _bookService.GetBookByTitle("1234567890");
+        
+        Assert.Null(addedBook);
+    }
+    
+    [Test]
+    public void GetBookByAuthor_ShouldReturnBook()
+    {
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        _bookService.AddBook(book);
+
+        var addedBook = _bookService.GetBookByAuthor(author);
+        
+        Assert.NotNull(addedBook);
+    }
+    
+    [Test]
+    public void GetBookByAuthor_ShouldNotReturnBook()
+    {
+        var author = new Author() { LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "1234567890", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        _bookService.AddBook(book);
+
+        var addedBook = _bookService.GetBookByAuthor(new Author() { LastName = "Test Author", FirstName = "Test Author" });
+        
+        Assert.Null(addedBook);
+    }
 }
