@@ -65,4 +65,21 @@ public class ReservationServiceTests
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);;
         Assert.IsNull(reservationService.GetReservationById(1));
     }
+    
+    [Test]
+    public void EndReservation_ShouldEndReservation()
+    {
+        var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
+        var reservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+
+        _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(reservation);
+        
+        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        reservationService.EndReservation(1);
+
+        Assert.IsTrue(reservation.IsReturned);
+    }
 }
