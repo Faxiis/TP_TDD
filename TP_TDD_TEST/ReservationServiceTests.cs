@@ -15,6 +15,23 @@ public class ReservationServiceTests
     }
     
     [Test]
+    public void GetReservationById_ShouldReturnReservation()
+    {
+        var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
+        var expectedReservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24) };
+
+        _mockDatabaseService.Setup(service => service.GetReservationById("2253009687")).Returns(expectedReservation);
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object);
+
+        var reservation = reservationService.GetReservationById("2253009687");
+        Assert.That(reservation, Is.EqualTo(expectedReservation));
+    }
+    
+    [Test]
     public void AddReservation_ShouldAddReservationToLibrary()
     {
         var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
