@@ -7,11 +7,13 @@ namespace TP_TDD_TEST;
 public class ReservationServiceTests
 {
     private Mock<IReservationDataService> _mockDatabaseService;
+    private Mock<IEmailService> _mockEmailService;
 
     [SetUp]
     public void Setup()
     {
         _mockDatabaseService = new Mock<IReservationDataService>();
+        _mockEmailService = new Mock<IEmailService>();
     }
     
     [Test]
@@ -25,7 +27,7 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(expectedReservation);
 
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
 
         var reservation = reservationService.GetReservationById(1);
         Assert.That(reservation, Is.EqualTo(expectedReservation));
@@ -42,7 +44,7 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(reservation);
         
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         reservationService.AddReservation(reservation);
 
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Once);;
@@ -59,7 +61,7 @@ public class ReservationServiceTests
         var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
         var reservation = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 8, 24) };
 
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         reservationService.AddReservation(reservation);
 
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);;
@@ -77,7 +79,7 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns(reservation);
         
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         reservationService.EndReservation(1);
 
         Assert.IsTrue(reservation.IsReturned);
@@ -97,14 +99,13 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservationByMember(1)).Returns(new List<Reservation> { reservation1, reservation2, reservation3 });
 
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         reservationService.AddReservation(reservation);
 
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
         Assert.IsNull(reservationService.GetReservationById(4));
     }
     
-    // test Il est possible d’obtenir la liste des réservations ouvertes
     [Test]
     public void GetReservation_ShouldReturnReservations()
     {
@@ -118,7 +119,7 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservations()).Returns(new List<Reservation> { reservation1, reservation2, reservation3 });
 
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         var reservations = reservationService.GetReservations();
 
         Assert.That(reservations, Is.EqualTo(new List<Reservation> { reservation1, reservation2, reservation3 }));
@@ -137,9 +138,27 @@ public class ReservationServiceTests
 
         _mockDatabaseService.Setup(service => service.GetReservationByMember(1)).Returns(new List<Reservation> { reservation1, reservation2, reservation3 });
 
-        var reservationService = new ReservationService(_mockDatabaseService.Object);
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
         var reservations = reservationService.GetReservationsByMember(1);
 
         Assert.That(reservations, Is.EqualTo(new List<Reservation> { reservation1, reservation2, reservation3 }));
+    }
+    
+    [Test]
+    public void SendOverdueReservationReminders_ShouldSendEmailToMembersWithOverdueReservations()
+    {
+        var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
+        var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
+        var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
+        var overdueReservation1 = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+        var overdueReservation2 = new Reservation() { Id = 2, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+
+        _mockDatabaseService.Setup(service => service.GetOverdueReservations()).Returns(new List<Reservation> { overdueReservation1, overdueReservation2 });
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
+        reservationService.SendOverdueReservationReminders();
+
+        _mockEmailService.Verify(service => service.SendReminderEmail(member, It.Is<List<Reservation>>(r => r.Count == 2)), Times.Once);
     }
 }

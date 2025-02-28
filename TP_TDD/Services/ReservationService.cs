@@ -2,7 +2,7 @@ using TP_TDD.Models;
 
 namespace TP_TDD.Services;
 
-public class ReservationService(IReservationDataService databaseService)
+public class ReservationService(IReservationDataService databaseService, IEmailService emailService)
 {
 
     public Reservation? GetReservationById(int id)
@@ -45,5 +45,10 @@ public class ReservationService(IReservationDataService databaseService)
     public List<Reservation>? GetReservationsByMember(int code)
     {
         return databaseService.GetReservationByMember(code)?.ToList();
+    }
+    
+    
+    public void SendOverdueReservationReminders()
+    {
     }
 }

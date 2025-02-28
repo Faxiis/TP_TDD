@@ -5,9 +5,7 @@ namespace TP_TDD_TEST;
 public class IsbnValidatorTests
 {
     [SetUp]
-    public void Setup()
-    {
-    }
+    public void Setup() { }
     
     [Test]
     public void IsValid_IsbnIs10CharValid_ShouldReturnsTrue()
