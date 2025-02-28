@@ -69,6 +69,32 @@ public class ReservationServiceTests
     }
     
     [Test]
+    public void AddReservation_ShouldNotAddReservationToLibrary_WhenBookIsNull()
+    {
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
+        var reservation = new Reservation() { Id = 1, Book = null, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
+        reservationService.AddReservation(reservation);
+
+        _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
+        Assert.IsNull(reservationService.GetReservationById(1));
+    }
+
+    [Test]
+    public void AddReservation_ShouldNotAddReservationToLibrary_WhenMemberIsNull()
+    {
+        var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" }, Publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" }, Format = "Poche", IsAvailable = true };
+        var reservation = new Reservation() { Id = 1, Book = book, Member = null, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
+        reservationService.AddReservation(reservation);
+
+        _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
+        Assert.IsNull(reservationService.GetReservationById(1));
+    }
+    
+    [Test]
     public void EndReservation_ShouldEndReservation()
     {
         var author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" };
