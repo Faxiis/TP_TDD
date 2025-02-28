@@ -12,6 +12,11 @@ public class ReservationService(IReservationDataService databaseService, IEmailS
     
     public void AddReservation(Reservation reservation)
     {
+        if (reservation.Book == null || reservation.Member == null)
+        {
+            return;
+        }
+            
         if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4) || Has3Reservations(reservation.Member))
         {
             return;
