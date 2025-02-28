@@ -75,10 +75,11 @@ public class ReservationServiceTests
         var reservation = new Reservation() { Id = 1, Book = null, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
 
         var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
-        reservationService.AddReservation(reservation);
 
+        var ex = Assert.Throws<ArgumentException>(() => reservationService.AddReservation(reservation));
+        
+        Assert.That(ex.Message, Is.EqualTo("La réservation doit avoir un membre et un livre."));
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
-        Assert.IsNull(reservationService.GetReservationById(1));
     }
 
     [Test]
@@ -86,12 +87,13 @@ public class ReservationServiceTests
     {
         var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = new Author() { Id = 1, LastName = "Test Author", FirstName = "Test Author" }, Publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" }, Format = "Poche", IsAvailable = true };
         var reservation = new Reservation() { Id = 1, Book = book, Member = null, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
-
+        
         var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
-        reservationService.AddReservation(reservation);
 
+        var ex = Assert.Throws<ArgumentException>(() => reservationService.AddReservation(reservation));
+        
+        Assert.That(ex.Message, Is.EqualTo("La réservation doit avoir un membre et un livre."));
         _mockDatabaseService.Verify(service => service.AddReservation(It.IsAny<Reservation>()), Times.Never);
-        Assert.IsNull(reservationService.GetReservationById(1));
     }
     
     [Test]
@@ -109,6 +111,17 @@ public class ReservationServiceTests
         reservationService.EndReservation(1);
 
         Assert.IsTrue(reservation.IsReturned);
+    }
+    
+    [Test]
+    public void EndReservation_ShouldThrowException_WhenReservationDoesNotExist()
+    {
+        _mockDatabaseService.Setup(service => service.GetReservationById(1)).Returns((Reservation)null);
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, _mockEmailService.Object);
+
+        var ex = Assert.Throws<ArgumentException>(() => reservationService.EndReservation(1));
+        Assert.That(ex.Message, Is.EqualTo("La réservation n'existe pas."));
     }
     
     [Test]

@@ -10,21 +10,23 @@ public class BookService(IBookDataService databaseService, IBookDataService webS
     public void AddBook(Book book)
     {
         var existingBook = databaseService.GetBookByIsbn(book.Isbn);
-        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn) || existingBook != null)
-        {
-            return;
-        }
+        if (!_isbnValidator.IsValid(book.Isbn))
+            throw new ArgumentException("L'ISBN n'est pas valide.");
+        if(!AreAllFieldsFilled(book))
+            throw new ArgumentException("Les champs ne sont pas tous remplis.");
+        if(existingBook != null)
+            throw new ArgumentException("Le livre existe déjà.");
 
         databaseService.AddBook(book);
     }
 
     public void UpdateBook(Book book)
     {
-        if (!AreAllFieldsFilled(book) || !_isbnValidator.IsValid(book.Isbn))
-        {
-            return;
-        }
-
+        if (!_isbnValidator.IsValid(book.Isbn))
+            throw new ArgumentException("L'ISBN n'est pas valide.");
+        if(!AreAllFieldsFilled(book))
+            throw new ArgumentException("Les champs ne sont pas tous remplis.");
+        
         databaseService.UpdateBook(book);
     }
 

@@ -14,7 +14,7 @@ public class ReservationService(IReservationDataService databaseService, IEmailS
     {
         if (reservation.Book == null || reservation.Member == null)
         {
-            return;
+            throw new ArgumentException("La réservation doit avoir un membre et un livre.");
         }
             
         if (reservation.ReturnDate > reservation.ReservationDate.AddMonths(4) || Has3Reservations(reservation.Member))
@@ -32,6 +32,10 @@ public class ReservationService(IReservationDataService databaseService, IEmailS
         if (reservation != null)
         {
             reservation.IsReturned = true;
+        }
+        else
+        {
+            throw new ArgumentException("La réservation n'existe pas.");
         }
     }
     

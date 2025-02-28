@@ -70,14 +70,18 @@ public class BookServiceTests
         var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
         var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
        
-        _mockDatabaseService.Setup(service => service.GetBookByIsbn("2253009687")).Returns(book);
+        _mockDatabaseService.Setup(service => service.GetBookByIsbn("2253009687")).Returns((Book)null);
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
         stockManager.AddBook(book);
 
+        _mockDatabaseService.Setup(service => service.GetBookByIsbn("2253009687")).Returns(book);
+
+        var addedBook = stockManager.GetBookDataByIsbn("2253009687");
+
         _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Once);
-        Assert.IsNotNull(stockManager.GetBookDataByIsbn("2253009687"));
-        Assert.That(stockManager.GetBookDataByIsbn("2253009687"), Is.EqualTo(book));
+        Assert.IsNotNull(addedBook);
+        Assert.That(addedBook, Is.EqualTo(book));
     }
     
     [Test]
@@ -92,10 +96,9 @@ public class BookServiceTests
         var newBook = new Book() { Isbn = "2253009687", Title = "New Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
-        stockManager.AddBook(newBook);
 
-        _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Never);
-        Assert.That(stockManager.GetBookDataByIsbn("2253009687")?.Title, Is.EqualTo("Existing Book"));
+        var ex = Assert.Throws<ArgumentException>(() => stockManager.AddBook(newBook));
+        Assert.That(ex.Message, Is.EqualTo("Le livre existe déjà."));
     }
     
     [Test]
@@ -106,10 +109,9 @@ public class BookServiceTests
         var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher,IsAvailable = true };
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
-        stockManager.AddBook(book);
 
-        _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Never);
-        Assert.IsNull(stockManager.GetBookDataByIsbn("2253009687"));
+        var ex = Assert.Throws<ArgumentException>(() => stockManager.AddBook(book));
+        Assert.That(ex.Message, Is.EqualTo("Les champs ne sont pas tous remplis."));
     }
     
     [Test]
@@ -120,10 +122,9 @@ public class BookServiceTests
         var book = new Book() { Isbn = "225300578", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
-        stockManager.AddBook(book);
 
-        _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Never);
-        Assert.IsNull(stockManager.GetBookDataByIsbn("225300578"));
+        var ex = Assert.Throws<ArgumentException>(() => stockManager.AddBook(book));
+        Assert.That(ex.Message, Is.EqualTo("L'ISBN n'est pas valide."));
     }
     
     [Test]
@@ -134,10 +135,9 @@ public class BookServiceTests
         var book = new Book() { Isbn = "225300a687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
-        stockManager.AddBook(book);
 
-        _mockDatabaseService.Verify(service => service.AddBook(It.IsAny<Book>()), Times.Never);
-        Assert.IsNull(stockManager.GetBookDataByIsbn("225300a687"));
+        var ex = Assert.Throws<ArgumentException>(() => stockManager.AddBook(book));
+        Assert.That(ex.Message, Is.EqualTo("L'ISBN n'est pas valide."));
     }
     
     [Test]
@@ -188,9 +188,8 @@ public class BookServiceTests
         var updatedBook = new Book() { Isbn = "2253009687", Title = "Updated Test Book", Author = author, Publisher = null, Format = "Poche", IsAvailable = true };
 
         var stockManager = new BookService(_mockDatabaseService.Object, _mockWebService.Object);
-        stockManager.UpdateBook(updatedBook);
 
-        _mockDatabaseService.Verify(service => service.UpdateBook(It.IsAny<Book>()), Times.Never);
-        Assert.That(stockManager.GetBookDataByIsbn("2253009687")?.Title, Is.EqualTo("Test Book"));
+        var ex = Assert.Throws<ArgumentException>(() => stockManager.UpdateBook(updatedBook));
+        Assert.That(ex.Message, Is.EqualTo("Les champs ne sont pas tous remplis."));
     }
 }
