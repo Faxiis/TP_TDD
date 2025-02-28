@@ -151,8 +151,8 @@ public class ReservationServiceTests
         var publisher = new Publisher() { Siret = "1234567890", Name = "Test Publisher" };
         var book = new Book() { Isbn = "2253009687", Title = "Test Book", Author = author, Publisher = publisher, Format = "Poche", IsAvailable = true };
         var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member", BirthDate = new DateTime(2000, 1, 1), Civility = "M" };
-        var overdueReservation1 = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
-        var overdueReservation2 = new Reservation() { Id = 2, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 3, 24) };
+        var overdueReservation1 = new Reservation() { Id = 1, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 2, 27) };
+        var overdueReservation2 = new Reservation() { Id = 2, Book = book, Member = member, ReservationDate = new DateTime(2025, 2, 24), ReturnDate = new DateTime(2025, 2, 27) };
 
         _mockDatabaseService.Setup(service => service.GetOverdueReservations()).Returns(new List<Reservation> { overdueReservation1, overdueReservation2 });
 
@@ -160,5 +160,38 @@ public class ReservationServiceTests
         reservationService.SendOverdueReservationReminders();
 
         _mockEmailService.Verify(service => service.SendReminderEmail(member, It.Is<List<Reservation>>(r => r.Count == 2)), Times.Once);
+        Assert.That(overdueReservation1.ReturnDate, Is.LessThan(DateTime.Now));
+        Assert.That(overdueReservation2.ReturnDate, Is.LessThan(DateTime.Now));
+    }
+    
+    [Test]
+    public void SendOverdueReservationReminders_ShouldNotSendEmailIfNoOverdueReservations()
+    {
+        _mockDatabaseService.Setup(service => service.GetOverdueReservations()).Returns(new List<Reservation>());
+        var mockEmailService = new Mock<IEmailService>();
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, mockEmailService.Object);
+        reservationService.SendOverdueReservationReminders();
+
+        mockEmailService.Verify(service => service.SendReminderEmail(It.IsAny<Member>(), It.IsAny<List<Reservation>>()), Times.Never);
+        Assert.That(_mockDatabaseService.Object.GetOverdueReservations().Count, Is.EqualTo(0));
+    }
+    
+    [Test]
+    public void SendOverdueReservationReminders_ShouldSendSingleEmailPerMemberWithMultipleOverdueReservations()
+    {
+        var member = new Member() { Code = 1, LastName = "Test Member", FirstName = "Test Member" };
+        var overdueReservation1 = new Reservation() { Id = 1, Member = member, ReservationDate = DateTime.Now.AddMonths(-2), ReturnDate = DateTime.Now.AddMonths(-1) };
+        var overdueReservation2 = new Reservation() { Id = 2, Member = member, ReservationDate = DateTime.Now.AddMonths(-2), ReturnDate = DateTime.Now.AddMonths(-1) };
+
+        _mockDatabaseService.Setup(service => service.GetOverdueReservations()).Returns(new List<Reservation> { overdueReservation1, overdueReservation2 });
+        var mockEmailService = new Mock<IEmailService>();
+
+        var reservationService = new ReservationService(_mockDatabaseService.Object, mockEmailService.Object);
+        reservationService.SendOverdueReservationReminders();
+
+        mockEmailService.Verify(service => service.SendReminderEmail(member, It.Is<List<Reservation>>(r => r.Count == 2)), Times.Once);
+        Assert.That(overdueReservation1.ReturnDate, Is.LessThan(DateTime.Now));
+        Assert.That(overdueReservation2.ReturnDate, Is.LessThan(DateTime.Now));
     }
 }
