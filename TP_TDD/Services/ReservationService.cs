@@ -50,5 +50,14 @@ public class ReservationService(IReservationDataService databaseService, IEmailS
     
     public void SendOverdueReservationReminders()
     {
+        var overdueReservations = databaseService.GetOverdueReservations();
+        var memberReservations = overdueReservations.GroupBy(r => r.Member);
+
+        foreach (var memberGroup in memberReservations)
+        {
+            var member = memberGroup.Key;
+            var reservations = memberGroup.ToList();
+            emailService.SendReminderEmail(member, reservations);
+        }
     }
 }
